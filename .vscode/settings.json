@@ -51,5 +51,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Cappocino assassino vs Tung Tung Tung Sahur.sln"
+    "dotnet.defaultSolution": "TTTSVCC.sln"
 }

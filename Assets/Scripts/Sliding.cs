@@ -56,6 +56,7 @@ public class Sliding : MonoBehaviour
         playerObj.localScale = new Vector3(playerObj.localScale.x, slideYScale, playerObj.localScale.z);
         rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
 
+        pm.animator.Play("Sprinting Forward Roll");
         slideTimer = maxSlideTime;
     }
 

@@ -16,6 +16,8 @@ public class PlayerMovement : MonoBehaviour
     public float airMultiplier;
     bool readyToJump;
 
+    public Animator animator;
+
     [Header("Keybinds")]
     public KeyCode jumpKey = KeyCode.Space;
     public KeyCode sprintKey = KeyCode.LeftShift;
@@ -40,6 +42,7 @@ public class PlayerMovement : MonoBehaviour
     {
         walking,
         sprinting,
+        idle, 
         air
     }
 
@@ -90,17 +93,26 @@ public class PlayerMovement : MonoBehaviour
     private void StateHandler()
     {
         // Mode - Sprinting
-        if (grounded && Input.GetKey(sprintKey))
+        if (grounded && Input.GetKey(sprintKey) && (horizontalInput != 0 || verticalInput != 0))
         {
             state = MovementState.sprinting;
             moveSpeed = sprintSpeed;
+            animator.SetFloat("Speed", moveSpeed);
         }
 
         // Mode - Walking
-        else if (grounded)
+        else if (grounded && (horizontalInput != 0 || verticalInput != 0))
         {
             state = MovementState.walking;
             moveSpeed = walkSpeed;
+            animator.SetFloat("Speed", moveSpeed);
+        }
+
+        // Mode - Idle
+        else if (grounded)
+        {
+            state = MovementState.idle;
+            animator.SetFloat("Speed", 0);
         }
 
         // Mode - Air
