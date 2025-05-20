@@ -12,11 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cf9d042d5b470b45aea0da736ae123c, type: 3}
   m_Name: Bat
   m_EditorClassIdentifier: 
-  name: 
-  damage: 0
-  maxDistance: 0
-  currentAmmo: 0
-  magSize: 0
-  fireRate: 0
-  reloadTime: 0
-  reloading: 0
+  name: Bat
+  damage: 50
+  maxDistance: 1.5
+  fireRate: 60

@@ -245,6 +245,8 @@ GameObject:
   - component: {fileID: 88269112}
   - component: {fileID: 88269113}
   - component: {fileID: 88269114}
+  - component: {fileID: 88269115}
+  - component: {fileID: 88269116}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -341,6 +343,34 @@ MonoBehaviour:
   maxSlideTime: 0.75
   slideForce: 200
   slideYScale: 0.5
+--- !u!114 &88269115
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 88269110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a574f64f96628ce4bb49b841d9263b1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  reloadKey: 114
+--- !u!114 &88269116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 88269110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31fa922574ebba44cae3d1fa1bafa95d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  loot: {fileID: 336118125}
+  health: 100
+  isEnemy: 0
 --- !u!1 &103398208
 GameObject:
   m_ObjectHideFlags: 0
@@ -418,7 +448,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be7bc0f87f5ebf34fabca3be2acc8124, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gun: {fileID: 0}
+  gunData: {fileID: 11400000, guid: e4db3997f450f6343a025253a26f615c, type: 2}
+  pm: {fileID: 88269113}
+  eyes: {fileID: 224584829}
+  isEnemy: 0
 --- !u!1001 &169867863
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -523,12 +556,17 @@ Transform:
   m_GameObject: {fileID: 224584828}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 88269111}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &336118125 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -3321919801592875672, guid: 7220833459a3faf419fefe827414a3bf, type: 3}
+  m_PrefabInstance: {fileID: 1115820536}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &372781009 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: a9888dfaead2560489fc11024a404bd6, type: 3}
@@ -814,6 +852,11 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -2432090755550338912, guid: 8c686dfe8cf57404da3793d7b942373b, type: 3}
+--- !u!4 &824046975 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -3321919801592875672, guid: a9888dfaead2560489fc11024a404bd6, type: 3}
+  m_PrefabInstance: {fileID: 169867863}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &878088580 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1852576806548013000, guid: a9888dfaead2560489fc11024a404bd6, type: 3}
@@ -1477,7 +1520,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1565034893}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.09252102, y: -0.00000001765986, z: 0.0000000016409466, w: 0.99571073}
+  m_LocalRotation: {x: 0.09252102, y: 0.000000017659854, z: -0.0000000016409462, w: 0.99571073}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1623,6 +1666,7 @@ GameObject:
   - component: {fileID: 1797088885}
   - component: {fileID: 1797088884}
   - component: {fileID: 1797088886}
+  - component: {fileID: 1797088887}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -1693,6 +1737,21 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 112
   m_CollisionDetection: 1
+--- !u!114 &1797088887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1797088883}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31fa922574ebba44cae3d1fa1bafa95d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  loot: {fileID: 824046975}
+  health: 100
+  isEnemy: 1
 --- !u!4 &1933113534 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a69c80c596c090a4bbc5c730cab887bc, type: 3}
