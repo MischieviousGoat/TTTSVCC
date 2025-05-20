@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Bat
   m_EditorClassIdentifier: 
   name: Bat
-  damage: 50
+  lightDamage: 15
+  heavyDamage: 30
   maxDistance: 1.5
-  fireRate: 60
+  lightFireRate: 60
+  heavyFireRate: 100

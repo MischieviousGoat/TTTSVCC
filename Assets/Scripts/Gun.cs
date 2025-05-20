@@ -19,29 +19,47 @@ public class Gun : MonoBehaviour
 
         if (!isEnemy)
         {
-            PlayerShoot.attackInput += Attack;
+            PlayerShoot.lightAttackInput += LightAttack;
+            PlayerShoot.heavyAttackInput += HeavyAttack;
         }
-        if (isEnemy)
+        /* if (isEnemy)
         {
-            EnemyAI.attackInput += Attack;
-        }
+            EnemyAI.attackInput += ttack;
+        } */
     }
 
-    private bool CanAttack() => timeSinceLastAttack > 1f / (gunData.fireRate / 60f);
+    private bool CanLightAttack() => timeSinceLastAttack > 1f / (gunData.lightFireRate / 60f);
 
-    private void Attack()
+    private bool CanHeavyAttack() => timeSinceLastAttack > 1f / (gunData.heavyFireRate / 60f);
+
+    private void LightAttack()
     {
-        pm.animator.Play("Great Sword Attack");
-        if (CanAttack())
+        if (CanLightAttack())
         {
+            pm.animator.Play("Great Sword Attack");
             if (Physics.Raycast(eyes.position, eyes.forward, out RaycastHit hitInfo, gunData.maxDistance))
             {
                 IDamageable damageable = hitInfo.transform.GetComponent<IDamageable>();
-                damageable?.Damage(gunData.damage);
+                damageable?.Damage(gunData.lightDamage);
             }
             timeSinceLastAttack = 0;
         }
     }
+
+    private void HeavyAttack()
+    {
+        if (CanHeavyAttack())
+        {
+            pm.animator.Play("Great Sword Slash");
+            if (Physics.Raycast(eyes.position, eyes.forward, out RaycastHit hitInfo, gunData.maxDistance))
+            {
+                IDamageable damageable = hitInfo.transform.GetComponent<IDamageable>();
+                damageable?.Damage(gunData.heavyDamage);
+            }
+            timeSinceLastAttack = 0;
+        }
+    }
+
 
     private void Update()
     {
