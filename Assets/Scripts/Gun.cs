@@ -3,11 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Gun : MonoBehaviour
+public class Ranged : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private GunData gunData;
-    [SerializeField] private PlayerMovement pm;
     [SerializeField] private Transform eyes;
 
     public bool isEnemy;
@@ -16,54 +15,69 @@ public class Gun : MonoBehaviour
 
     void Awake()
     {
+        eyes = transform.parent.parent;
 
         if (!isEnemy)
         {
-            PlayerShoot.lightAttackInput += LightAttack;
-            PlayerShoot.heavyAttackInput += HeavyAttack;
+            PlayerMovement.attackInput += Attack;
+            Player.reloadInput += StartReload;
+            eyes = transform.parent.parent.GetComponent<Transform>();
         }
-        /* if (isEnemy)
+        if (isEnemy)
         {
-            EnemyAI.attackInput += ttack;
-        } */
+            EnemyAI.attackInput += Attack;
+            EnemyAI.reloadInput += StartReload;
+        }
+        gunData.currentAmmo = gunData.magSize;
     }
 
-    private bool CanLightAttack() => timeSinceLastAttack > 1f / (gunData.lightFireRate / 60f);
+    private void OnDisable() => gunData.reloading = false;
 
-    private bool CanHeavyAttack() => timeSinceLastAttack > 1f / (gunData.heavyFireRate / 60f);
-
-    private void LightAttack()
+    public void StartReload()
     {
-        if (CanLightAttack())
-        {
-            pm.animator.Play("Great Sword Attack");
-            if (Physics.Raycast(eyes.position, eyes.forward, out RaycastHit hitInfo, gunData.maxDistance))
-            {
-                IDamageable damageable = hitInfo.transform.GetComponent<IDamageable>();
-                damageable?.Damage(gunData.lightDamage);
-            }
-            timeSinceLastAttack = 0;
-        }
+        if (!gunData.reloading)
+            StartCoroutine(Reload());
     }
 
-    private void HeavyAttack()
+    private IEnumerator Reload()
     {
-        if (CanHeavyAttack())
-        {
-            pm.animator.Play("Great Sword Slash");
-            if (Physics.Raycast(eyes.position, eyes.forward, out RaycastHit hitInfo, gunData.maxDistance))
-            {
-                IDamageable damageable = hitInfo.transform.GetComponent<IDamageable>();
-                damageable?.Damage(gunData.heavyDamage);
-            }
-            timeSinceLastAttack = 0;
-        }
+        gunData.reloading = true;
+
+        yield return new WaitForSeconds(gunData.reloadTime);
+
+        gunData.currentAmmo = gunData.magSize;
+
+        gunData.reloading = false;
     }
 
+    private bool CanAttack() => !gunData.reloading && timeSinceLastAttack > 1f / (gunData.firerate / 60f);
+
+    private void Attack()
+    {
+        if (gunData.currentAmmo > 0)
+        {
+            if (CanAttack())
+            {
+                if (Physics.Raycast(eyes.position, eyes.forward, out RaycastHit hitInfo, gunData.range))
+                {
+                    IDamageable damageable = hitInfo.transform.GetComponent<IDamageable>();
+                    damageable?.Damage(gunData.damage);
+                }
+
+                gunData.currentAmmo--;
+                timeSinceLastAttack = 0;
+            }
+        }
+    }
 
     private void Update()
     {
         timeSinceLastAttack += Time.deltaTime;
+
+        if (gunData.currentAmmo == 0)
+        {
+            StartReload();
+        }
 
         Debug.DrawRay(eyes.position, eyes.forward);
     }

@@ -2,19 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-[CreateAssetMenu(fileName="Gun", menuName="Weapon/Gun")]
-public class GunData : ScriptableObject
+[CreateAssetMenu(fileName = "Gun", menuName = "Weapon/Gun")]
+public class GunData : MonoBehaviour
 {
     [Header("Info")]
     public new string name;
 
     [Header("Shooting")]
-    public float lightDamage;
-    public float heavyDamage;
-    public float maxDistance;
+    public float damage;
+    public float range;
 
     [Header("Reloading")]
-    public float lightFireRate;
-    public float heavyFireRate;
+    public int currentAmmo;
+    public int magSize;
+    public float fireRate;
+    public float reloadTime;
+    [HideInInspector] public bool reloading;
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 public class Target : MonoBehaviour, IDamageable
 {
     public Transform loot;
+    public Animator animator;
 
     public float health = 100f;
     private Rigidbody rb;
@@ -30,6 +31,14 @@ public class Target : MonoBehaviour, IDamageable
     {
         rb = GetComponent<Rigidbody>();
         health -= damage;
+
+        if (isEnemy)
+        {
+            animator.Play("Hit Reaction");
+        } else
+        {
+            animator.Play("Great Sword Impact");
+        }
 
         rb.AddForce(-rb.velocity * 2f, ForceMode.Impulse);
     }

@@ -1,11 +1,14 @@
 using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyAI : MonoBehaviour
 {
     private GameObject player;
     public Transform orientation;
+
+    public Animator a;
 
     public float moveSpeed;
     public float groundDrag;
@@ -20,7 +23,6 @@ public class EnemyAI : MonoBehaviour
     private Vector3 randomDir;
 
     public static Action attackInput;
-    public static Action reloadInput;
 
     private void Start()
     {
@@ -36,6 +38,7 @@ public class EnemyAI : MonoBehaviour
         grounded = Physics.Raycast(new Vector3(transform.position.x, transform.position.y, transform.position.z), Vector3.down, enemyHeight * 0.5f + 0.2f, ground);
 
         orientation.LookAt(player.transform);
+        transform.forward = orientation.forward;
     }
 
     private void FixedUpdate()
@@ -50,33 +53,16 @@ public class EnemyAI : MonoBehaviour
             Vector3 playerDir = new Vector3(player.transform.position.x, transform.position.y, player.transform.position.z);
             moveDir = playerDir - transform.position;
 
-            if (Vector3.Distance(transform.position, player.transform.position) <= 15 && Vector3.Distance(transform.position, player.transform.position) > 2)
+            if (Vector3.Distance(transform.position, player.transform.position) > 5)
             {
-                StopCoroutine(Wander());
+                a.SetFloat("Speed", moveSpeed);
 
                 rb.AddForce(moveDir.normalized * moveSpeed * 10f, ForceMode.Force);
-            }
-            else if (Vector3.Distance(transform.position, player.transform.position) > 15)
-            {
-                // randomly move the enemy but for now it stops moving
-                // rb.AddForce(-(moveDir.normalized * moveSpeed * 10f), ForceMode.Force);
-                StartCoroutine(Wander());
-            }
+            } else {
+                a.SetFloat("Speed", 0);
 
-            if (Vector3.Distance(transform.position, player.transform.position) < 7)
-            {
                 attackInput?.Invoke();
             }
         }
-    }
-
-    IEnumerator Wander()
-    {
-        yield return new WaitForSeconds(5);
-
-        randomDir = new Vector3(UnityEngine.Random.Range(-5, 5) - transform.position.x, transform.position.y, UnityEngine.Random.Range(-5, 5) - transform.position.z);
-
-        rb.AddForce(randomDir.normalized * moveSpeed * 10f, ForceMode.Force);
-
     }
 }
