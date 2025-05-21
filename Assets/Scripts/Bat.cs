@@ -10,22 +10,12 @@ public class Bat : MonoBehaviour
     [SerializeField] private PlayerMovement pm;
     [SerializeField] private Transform eyes;
 
-    public bool isEnemy;
-
     float timeSinceLastAttack;
 
     void Awake()
     {
-
-        if (!isEnemy)
-        {
-            PlayerShoot.lightAttackInput += LightAttack;
-            PlayerShoot.heavyAttackInput += HeavyAttack;
-        }
-        /* if (isEnemy)
-        {
-            EnemyAI.attackInput += ttack;
-        } */
+        PlayerShoot.lightAttackInput += LightAttack;
+        PlayerShoot.heavyAttackInput += HeavyAttack;
     }
 
     private bool CanLightAttack() => timeSinceLastAttack > 1f / (batData.lightFireRate / 60f);

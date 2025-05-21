@@ -32,30 +32,42 @@ public class Target : MonoBehaviour, IDamageable
         rb = GetComponent<Rigidbody>();
         health -= damage;
 
-        if (isEnemy)
+        if (health >= 0)
         {
-            animator.Play("Hit Reaction");
-        } else
-        {
-            animator.Play("Great Sword Impact");
+            if (isEnemy)
+            {
+                animator.Play("Hit Reaction");
+            } else
+            {
+                animator.Play("Great Sword Impact");
+            }
         }
-
-        rb.AddForce(-rb.velocity * 2f, ForceMode.Impulse);
     }
 
     IEnumerator Despawn()
     {
         if (isEnemy)
         {
+            animator.Play("Death");
+
             GetComponent<EnemyAI>().enabled = false;
-            yield return new WaitForSeconds(7);
+
+            yield return new WaitForSeconds(2);
 
             Destroy(gameObject);
-            Instantiate(loot, gameObject.transform.position, gameObject.transform.rotation);
         }
         else
         {
+            animator.Play("Two Handed Sword Death");
+
             GetComponent<PlayerShoot>().enabled = false;
+            GetComponent<Sliding>().enabled = false;
+            GetComponent<PlayerMovement>().enabled = false;
+
+            yield return new WaitForSeconds(2);
+
+            Destroy(gameObject);
+
         }
     }
 

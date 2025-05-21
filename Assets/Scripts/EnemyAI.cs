@@ -8,8 +8,6 @@ public class EnemyAI : MonoBehaviour
     private GameObject player;
     public Transform orientation;
 
-    public Animator a;
-
     public float moveSpeed;
     public float groundDrag;
 
@@ -23,6 +21,7 @@ public class EnemyAI : MonoBehaviour
     private Vector3 randomDir;
 
     public static Action attackInput;
+    public static Action reloadInput;
 
     private void Start()
     {
@@ -34,11 +33,15 @@ public class EnemyAI : MonoBehaviour
 
     private void Update()
     {
-        // ground check
-        grounded = Physics.Raycast(new Vector3(transform.position.x, transform.position.y, transform.position.z), Vector3.down, enemyHeight * 0.5f + 0.2f, ground);
+        grounded = Physics.Raycast(transform.position, Vector3.down, enemyHeight * 0.5f + 0.2f, ground);
 
         orientation.LookAt(player.transform);
         transform.forward = orientation.forward;
+
+        if (Vector3.Distance(transform.position, player.transform.position) < 7)
+        {
+            attackInput?.Invoke();
+        }
     }
 
     private void FixedUpdate()
@@ -53,15 +56,9 @@ public class EnemyAI : MonoBehaviour
             Vector3 playerDir = new Vector3(player.transform.position.x, transform.position.y, player.transform.position.z);
             moveDir = playerDir - transform.position;
 
-            if (Vector3.Distance(transform.position, player.transform.position) > 5)
+            if (Vector3.Distance(transform.position, player.transform.position) > 4)
             {
-                a.SetFloat("Speed", moveSpeed);
-
                 rb.AddForce(moveDir.normalized * moveSpeed * 10f, ForceMode.Force);
-            } else {
-                a.SetFloat("Speed", 0);
-
-                attackInput?.Invoke();
             }
         }
     }

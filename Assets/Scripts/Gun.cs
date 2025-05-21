@@ -1,33 +1,19 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ranged : MonoBehaviour
+public class Gun : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private GunData gunData;
     [SerializeField] private Transform eyes;
 
-    public bool isEnemy;
-
     float timeSinceLastAttack;
 
     void Awake()
     {
-        eyes = transform.parent.parent;
-
-        if (!isEnemy)
-        {
-            PlayerMovement.attackInput += Attack;
-            Player.reloadInput += StartReload;
-            eyes = transform.parent.parent.GetComponent<Transform>();
-        }
-        if (isEnemy)
-        {
-            EnemyAI.attackInput += Attack;
-            EnemyAI.reloadInput += StartReload;
-        }
+        EnemyAI.attackInput += Attack;
+        EnemyAI.reloadInput += StartReload;
         gunData.currentAmmo = gunData.magSize;
     }
 
@@ -50,7 +36,7 @@ public class Ranged : MonoBehaviour
         gunData.reloading = false;
     }
 
-    private bool CanAttack() => !gunData.reloading && timeSinceLastAttack > 1f / (gunData.firerate / 60f);
+    private bool CanAttack() => !gunData.reloading && timeSinceLastAttack > 1f / (gunData.fireRate / 60f);
 
     private void Attack()
     {
